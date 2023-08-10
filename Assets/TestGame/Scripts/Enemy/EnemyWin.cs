@@ -18,8 +18,8 @@ public class EnemyWin : MonoBehaviour
         if (collision.tag == "Player")
         {
             moveSet.enabled = false;
-            anim.AnimationName = "win";
             anim.loop = false;
+            anim.AnimationName = "win";
             this.enabled = false;
         }
     }

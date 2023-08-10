@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Transform spawnPoint;
+    public GameObject enemy;
+    private float tempTime;
+
+    private void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (tempTime <= 0)
+        {
+            spawnEnemy();
+            tempTime = 7.5f;
+        }
+        else 
+        {
+            tempTime -= Time.deltaTime;
+        }
+    }
+
+    private void spawnEnemy()
+    {
+        Vector3 point = spawnPoint.position;
+        Quaternion rotation = spawnPoint.rotation;
+        Instantiate(enemy, point, rotation);
     }
 }
