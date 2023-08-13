@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class PlayerDeath : MonoBehaviour
 {
-    public SkeletonAnimation anim;
-    public PlayerMoveset moveSet;
+    private SkeletonAnimation anim;
+    private PlayerMoveset moveSet;
 
     private void Start()
     {
         moveSet = GetComponent<PlayerMoveset>();
-
+        anim = GetComponentInChildren<SkeletonAnimation>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

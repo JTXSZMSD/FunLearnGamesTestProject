@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class EnemyDeath : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject particleExplosion;
+
     private void Update()
     {
-        if (PlayerWin.hasWon == true)
-        {
-            Destroy(gameObject);
-        }
+        //if (PlayerCollisions.hasWon == true)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,6 +21,7 @@ public class EnemyDeath : MonoBehaviour
         {
             Destroy(gameObject);
             Destroy(collision.gameObject);
+            Instantiate(particleExplosion, collision.gameObject.transform.position, collision.gameObject.transform.rotation);
         }
     }
 }

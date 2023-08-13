@@ -7,20 +7,40 @@ using UnityEngine;
 public class ShootingSystem : MonoBehaviour
 {
     public GameObject bullet;
+
+    [SerializeField]
+    private GameObject particleMuzzle;
+
     public Transform startPoint;
-    public SkeletonAnimation anim;
+
+    private SkeletonAnimation anim;
     private PlayerMoveset moveset;
+    private PlayerCollisions collisions;
 
     private void Start()
     {
         moveset = GetComponent<PlayerMoveset>();
+        collisions = GetComponent<PlayerCollisions>();
+        anim = GetComponentInChildren<SkeletonAnimation>();
+        
     }
 
     public void shoot()
     {
         changeAnimationToShoot();
         Invoke("spawnProjectile", 0.5f);
-        Invoke("changeAnimationToWalk", 1.5f);
+        particleMuzzle.SetActive(true);
+        StartCoroutine(timer(1.5f));
+
+        
+
+    }
+
+    private void changeAnimationToIdle()
+    {
+        anim.loop = true;
+        anim.timeScale = 1f;
+        anim.AnimationName = "idle";
     }
 
     private void changeAnimationToShoot()
@@ -28,7 +48,10 @@ public class ShootingSystem : MonoBehaviour
         anim.loop = false;
         anim.timeScale = 1.5f;
         anim.AnimationName = "shoot";
-        moveset.enabled = false;
+        if (moveset.enabled == true)
+        {
+            moveset.enabled = false;
+        }
     }
 
     private void changeAnimationToWalk()
@@ -44,5 +67,19 @@ public class ShootingSystem : MonoBehaviour
         Vector3 point = startPoint.position;
         Quaternion rotation = startPoint.rotation;
         Instantiate(bullet, point, rotation);
+    }
+
+    private IEnumerator timer(float t)
+    {
+        yield return new WaitForSeconds(t);
+
+        if (collisions.finishFound == false)
+        {
+            changeAnimationToWalk();
+        }
+        else if (collisions.finishFound == true)
+        {
+            changeAnimationToIdle();
+        }
     }
 }
